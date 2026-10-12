@@ -1,0 +1,35 @@
+
+---
+
+## 4. `.gitignore`
+
+```gitignore
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Node (just in case)
+node_modules/
+package-lock.json
+
+# Audio test files
+audio/
+*.wav
+*.mp3
+*.flac
+*.ogg
+
+# Build artifacts
+dist/
+build/

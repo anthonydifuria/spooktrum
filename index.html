@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPOOKTRUM</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+</head>
+<body data-theme="blue">
+    <div class="dos-container">
+
+        <header class="dos-header">
+            <div class="header-left">
+                <div class="pixel-ghost"></div>
+                <span>SPOOKTRUM v0.1.0</span>
+            </div>
+            <div class="header-center">
+                <span class="theme-label">THEME:</span>
+                <button class="theme-btn" onclick="setTheme('blue')">BLUE</button>
+                <button class="theme-btn" onclick="setTheme('green')">GREEN</button>
+                <button class="theme-btn" onclick="setTheme('amber')">AMBER</button>
+                <button class="theme-btn" onclick="setTheme('sepia')">SEPIA</button>
+                <button class="theme-btn" onclick="setTheme('mono')">MONO</button>
+            </div>
+            <div class="header-right">
+                <span>GPL-3.0</span>
+            </div>
+        </header>
+
+        <div class="dos-body">
+
+            <aside class="dos-panel left">
+                <div class="panel-title">─[ PARAMETERS ]─────────────────</div>
+
+                <div class="dos-section">
+                    <div class="section-label">AUDIO</div>
+                    <input type="file" id="audioFile" accept="audio/*" class="dos-file">
+                    <div id="audioInfo" class="dos-info"></div>
+                </div>
+
+                <div class="dos-section">
+                    <div class="section-label">FFT SIZE</div>
+                    <div class="btn-row" id="fftSizeGroup">
+                        <button class="dos-btn" data-value="256">256</button>
+                        <button class="dos-btn" data-value="512">512</button>
+                        <button class="dos-btn active" data-value="1024">1K</button>
+                        <button class="dos-btn" data-value="2048">2K</button>
+                        <button class="dos-btn" data-value="4096">4K</button>
+                        <button class="dos-btn" data-value="8192">8K</button>
+                    </div>
+                </div>
+
+                <div class="dos-section">
+                    <div class="section-label">WINDOW</div>
+                    <div class="btn-row" id="windowGroup">
+                        <button class="dos-btn active" data-value="hann">HANN</button>
+                        <button class="dos-btn" data-value="hamming">HAMM</button>
+                        <button class="dos-btn" data-value="blackman">BLCK</button>
+                        <button class="dos-btn" data-value="kaiser">KAIS</button>
+                        <button class="dos-btn" data-value="rectangular">RECT</button>
+                    </div>
+                </div>
+
+                <div class="dos-section">
+                    <div class="section-label">OVERLAP: <span id="overlapValue">75</span>%</div>
+                    <input type="range" id="overlap" min="0" max="95" value="75" class="dos-range">
+                </div>
+
+                <div class="dos-section">
+                    <div class="section-label">FREQ SCALE: <span id="scaleValue">1.00</span></div>
+                    <input type="range" id="freqScale" min="0" max="100" value="100" class="dos-range">
+                </div>
+
+                <div class="dos-section row">
+                    <div>
+                        <div class="section-label">MIN Hz</div>
+                        <input type="number" id="freqMin" value="20" class="dos-input">
+                    </div>
+                    <div>
+                        <div class="section-label">MAX Hz</div>
+                        <input type="number" id="freqMax" value="20000" class="dos-input">
+                    </div>
+                </div>
+
+                <div class="dos-section row">
+                    <div>
+                        <div class="section-label">MIN dB</div>
+                        <input type="number" id="dbMin" value="-100" class="dos-input">
+                    </div>
+                    <div>
+                        <div class="section-label">MAX dB</div>
+                        <input type="number" id="dbMax" value="0" class="dos-input">
+                    </div>
+                </div>
+
+                <div class="dos-section">
+                    <div class="section-label">PALETTE</div>
+                    <div class="btn-row" id="colormapGroup">
+                        <button class="dos-btn" data-value="grayscale">GRAY</button>
+                        <button class="dos-btn" data-value="viridis">VIRI</button>
+                        <button class="dos-btn active" data-value="inferno">INFE</button>
+                        <button class="dos-btn" data-value="magma">MAGM</button>
+                        <button class="dos-btn" data-value="plasma">PLAS</button>
+                    </div>
+                </div>
+
+                <div class="dos-section">
+                    <div class="section-label">OUTPUT MODE</div>
+                    <div class="radio-row">
+                        <label><input type="radio" name="sizeMode" value="rate" checked> RATE</label>
+                        <label><input type="radio" name="sizeMode" value="height"> HEIGHT</label>
+                        <label><input type="radio" name="sizeMode" value="custom"> CUSTOM</label>
+                    </div>
+                </div>
+
+                <div id="rateControls">
+                    <div class="dos-section">
+                        <div class="section-label">RATE: <span id="rateValue">150</span> px/s</div>
+                        <input type="range" id="rate" min="10" max="1000" value="150" class="dos-range">
+                    </div>
+                    <div class="dos-section">
+                        <div class="section-label">HEIGHT</div>
+                        <input type="number" id="heightRate" value="1080" class="dos-input">
+                    </div>
+                </div>
+
+                <div id="heightControls" class="hidden">
+                    <div class="dos-section">
+                        <div class="section-label">HEIGHT</div>
+                        <input type="number" id="heightOnly" value="1080" class="dos-input">
+                    </div>
+                    <div class="dos-section">
+                        <div class="section-label">ASPECT</div>
+                        <select id="aspectRatio" class="dos-select">
+                            <option value="1.777">16:9</option>
+                            <option value="1.333">4:3</option>
+                            <option value="1">1:1</option>
+                            <option value="2.39">21:9</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="customControls" class="hidden">
+                    <div class="dos-section row">
+                        <div>
+                            <div class="section-label">WIDTH</div>
+                            <input type="number" id="widthCustom" value="1920" class="dos-input">
+                        </div>
+                        <div>
+                            <div class="section-label">HEIGHT</div>
+                            <input type="number" id="heightCustom" value="1080" class="dos-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dos-section">
+                    <div class="section-label">PRESETS</div>
+                    <div class="btn-row">
+                        <button class="dos-btn small" data-preset="1920,1080">FHD</button>
+                        <button class="dos-btn small" data-preset="2560,1440">2K</button>
+                        <button class="dos-btn small" data-preset="3840,2160">4K</button>
+                        <button class="dos-btn small" data-preset="7680,4320">8K</button>
+                    </div>
+                    <div id="outputSize" class="dos-info"></div>
+                </div>
+
+                <div class="dos-section actions">
+                    <button id="generateBtn" class="dos-btn primary">[ GENERATE ]</button>
+                    <button id="downloadBtn" class="dos-btn" disabled>[ EXPORT PNG ]</button>
+                </div>
+
+            </aside>
+
+            <main class="dos-panel right">
+                <div class="panel-title">─[ WAVEFORM ]───────────────────</div>
+                <canvas id="waveformCanvas"></canvas>
+
+                <div class="panel-title">─[ SPECTROGRAM ]────────────────</div>
+                <div class="canvas-wrapper">
+                    <canvas id="spectrogramCanvas"></canvas>
+                </div>
+
+                <div id="status" class="dos-status"></div>
+            </main>
+
+        </div>
+
+        <footer class="dos-footer">
+            <span> SPOOKTRUM by Anthony Di Furia </span>
+            <span> spectral ghost engine </span>
+        </footer>
+
+    </div>
+
+    <script>
+        function setTheme(name) {
+            document.body.setAttribute('data-theme', name);
+        }
+    </script>
+    <script src="colormap.js"></script>
+    <script src="audio-processor.js"></script>
+    <script src="webgl-renderer.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
